@@ -47,7 +47,7 @@ not be the best shape.
 
 ## Waveform
 
-![waveform](waveform_BO_shaped_rise.png)
+![waveform](waveform_BO_rise_20261101_1p09us.png)
 
 Panels:
 - **Top left:** the normalized shape against a linear rise.
