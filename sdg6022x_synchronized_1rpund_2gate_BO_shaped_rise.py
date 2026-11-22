@@ -104,15 +104,15 @@ pos_rise_time_s = 1e-6         # BO-shaped rising edge duration (the shape is st
 pos_edge_time_s = 20e-9        # Linear FALLING edge only (the rise is pos_rise_time_s)
 
 # BO-optimized rise shape: Bernstein coefficients c_k as fractions of the
-# flat-top amplitude, V(s) = pos_amplitude_v * sum_k c_k C(7,k) s^k (1-s)^(7-k),
-# s = 0..1 over pos_rise_time_s. Only the SHAPE is borrowed; rise time and
-# amplitude above are free. Source: Bayesian optimization run 2026-11-17,
-# device BTO_PLD219_2, 1 us rise, 1.2 V flat top (rise_time_s1e-06_rep2):
-# 30.4 % less switching work than a linear rise at the same delta_P.
-# The rise ends at 0.86 of the flat top and steps up into it (as optimized),
-# and dips slightly below 0 V (-0.083 x amplitude) as optimized.
-BO_RISE_SHAPE = np.array([-0.1, -0.1, 0.9421935716397816, 0.4264962212849039,
-                          -0.1, 0.7366323818702947, -0.1, 1.0323320817794868]) / 1.2
+# flat-top amplitude, V(s) = pos_amplitude_v * sum_k c_k C(n,k) s^k (1-s)^(n-k),
+# n = 5, s = 0..1 over pos_rise_time_s. Only the SHAPE is borrowed; rise time
+# and amplitude above are free. Source: Bayesian optimization run 2026-11-01,
+# device BTO_PLD219_2, 1.09 us rise, 1.2 V flat top, voltages >= 0 V
+# (rise_time_s1.09e-06_rep3): 35.0 % less switching work than a linear rise
+# at the same delta_P. The rise starts at 0.48 and ends at 0.76 of the flat
+# top, stepping into both (as optimized).
+BO_RISE_SHAPE = np.array([0.5709409800860872, 0.0, 0.2821799540406488,
+                          0.4649694883726242, 0.0, 0.9060602792740968]) / 1.2
 
 # Negative pulses N and D (shared parameters)
 enable_nd_pulses = False        # False -> sequence ends after U (Reset-P-U only)

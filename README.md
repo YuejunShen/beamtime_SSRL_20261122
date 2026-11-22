@@ -18,9 +18,9 @@ Only the *shape* is fixed. Rise time and amplitude are still settings:
 | `pos_rise_time_s` | duration of the BO-shaped rise (default 1 µs) |
 | `pos_amplitude_v` | flat-top voltage; the shape is scaled to it |
 | `pos_edge_time_s` | linear **falling** edge only |
-| `BO_RISE_SHAPE` | 8 Bernstein coefficients, as fractions of the flat top |
+| `BO_RISE_SHAPE` | 6 Bernstein coefficients, as fractions of the flat top |
 
-The rise is V(t) = `pos_amplitude_v` · Σₖ cₖ·C(7,k)·sᵏ(1−s)⁷⁻ᵏ with
+The rise is V(t) = `pos_amplitude_v` · Σₖ cₖ·C(5,k)·sᵏ(1−s)⁵⁻ᵏ with
 s = t / `pos_rise_time_s`. It is sampled exactly as in the optimization: the
 built rise matches the BO code to within 3·10⁻⁸ V.
 
@@ -29,18 +29,19 @@ P gate still ends 1 µs (`gate_pad`) before the end of P's flat top.
 
 ## Where the shape comes from
 
-The shape is the BO run of 2026-11-17 on device BTO_PLD219_2, with a 1 µs rise
-and a 1.2 V flat top (`rise_time_s1e-06_rep2`). Its confirmed result was 30.4 %
-less switching work (∫V·(I_P − I_U)dt over the rise) than a linear rise, at the
-same switched polarization (1.0007 × the linear rise).
+The shape is the BO run of 2026-11-01 on device BTO_PLD219_2, with a 1.09 µs
+rise, a 1.2 V flat top and voltages limited to 0–1.45 V
+(`rise_time_s1.09e-06_rep3`). Its confirmed result was 35.0 % less switching
+work (∫V·(I_P − I_U)dt over the rise) than a linear rise, at the same switched
+polarization (1.0025 × the linear rise, 10 repeats).
 
 The shape has two features to be aware of:
-- It starts at −0.083 × amplitude, a small dip below 0 V.
-- It ends at 0.86 × amplitude and steps up into the flat top.
+- It jumps from 0 V to 0.48 × amplitude at the start, then dips to 0.21 × amplitude.
+- It ends at 0.76 × amplitude and steps up into the flat top.
 
-Both are part of the optimized shape.
+It never goes below 0 V. Both steps are part of the optimized shape.
 
-It was optimized for that device, at 1 µs and 1.2 V. At other rise times or
+It was optimized for that device, at 1.09 µs and 1.2 V. At other rise times or
 amplitudes the shape is reused as is. It is not re-optimized there, so it may
 not be the best shape.
 
